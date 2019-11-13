@@ -4,6 +4,8 @@ usm is an assembly language that targets programming languages.
 
 **Please Note** usm is in heavy development and the targets are proof-of-concept and incomplete.
 
+![Banner](media/banner.png)
+
 If your programming language targets usm then it can be embedded inside other programming languages.
 
 Imagine a library that can be used from any programming language without linking issues. This is possible with usm.
