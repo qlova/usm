@@ -1,0 +1,95 @@
+**Types**
+number
+string
+array
+table
+pointer
+connection
+function
+
+**Statements:**
+VAR [name] <expression>
+SET [name] <expression>
+
+MAIN {block}
+
+IF <condition> {block}
+ELSE (<condition>) {block}
+
+LOOP (<condition>) {block}
+EACH <array> [i] [v] {block}
+BREAK
+
+DEFINE [name] 0..n {block}
+RETURN (<expression>)
+JUMPTO $function ...
+
+THROW <expression>
+
+READ (<connection>) <string>
+SEND (<connection>) <string>
+SEEK (<connection>)
+
+DELETE |type| <expression>
+
+CHANGE <pointer> <value>
+
+MUTATE <array> <index> <value>
+APPEND <array> <value>
+
+INSERT <table> <index> <value>
+
+MODIFY <string> <index> <number>
+
+
+**literals**
+0..n
+""
+true/false
+
+**expressions:**
+<GET [name]> 
+<BIND $function> function
+
+<CATCH> ?
+<CALL $function ...> ?
+<FORK $function ...> connection
+
+<POINTER a> pointer
+
+<ALLOC number> array
+<ARRAY ...> array
+<TABLE ...> table
+
+<COUNT array> number
+<INDEX array index>  ?
+
+<AMOUNT table> number
+<LOOKUP table key>  ?
+<REMOVE table key>
+
+<STRING number> string
+<EQUALS a b> number
+<LENGTH string> number
+<SYMBOL string index> number
+<CONCAT a b> string
+
+<FOLLOW pointer> ?
+
+<OPEN uri> connection
+<STAT (connection) string> string 
+
+<ADD a b> number
+<MUL a b> number
+<DIV a b> number
+<SUB a b> number
+<MOD a b> number
+<POW a b> number
+
+<LESS a b> number
+<MORE a b> number
+<SAME a b> number
+
+<AND a b> number
+<OR a b> number
+<NOT a> number
