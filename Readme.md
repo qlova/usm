@@ -1,7 +1,6 @@
-# 'usm' assembly (usm)
-usm is an assembly language that targets programming languages.
+# ![Logo](media/logo.png)
 
-![Logo](media/logo.svg)
+usm is an assembly language that targets programming languages.
 
 **Please Note** usm is in heavy development and the targets are proof-of-concept and incomplete.
 
