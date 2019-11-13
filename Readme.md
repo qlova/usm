@@ -23,5 +23,6 @@ Imagine a library that can be used from any programming language without linking
 * C
 * Rust
 * Ruby
+* Lua
 
 usm is inspired by my previous work on [uct](https://github.com/qlova/uct). Many things have been learnt from the development of uct and are being used to inform the complete overhaul that is usm.
