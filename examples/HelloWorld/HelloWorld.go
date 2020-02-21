@@ -12,7 +12,10 @@ import (
 func main() {
 	var c bytecode.Target
 	c.Main(func() {
-		c.Discard(c.Send(nil, c.String("Hello World\n")))
+		hello := c.Define(0, func() {
+			c.Discard(c.Send(nil, c.String("Hello World\n")))
+		})
+		c.JumpTo(hello)
 	})
 	var buffer bytes.Buffer
 	c.WriteTo(&buffer)
@@ -29,6 +32,8 @@ func main() {
 
 	var t golang.Target
 	bytecode.NewReader(bytes.NewReader(buffer.Bytes())).Target(&t)
+
+	//t.WriteTo(os.Stdout)
 
 	fmt.Println("\nGo: ")
 	if err := t.Run(); err != nil {

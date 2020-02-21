@@ -13,7 +13,11 @@ import (
 //Target is a Target Target
 type Target struct {
 	bytes.Buffer
-	Tabs int
+	Head bytes.Buffer
+
+	Tabs      int
+	Labels    usm.Label
+	Registers usm.Register
 }
 
 //Indent processes and indents the given block.
@@ -59,7 +63,7 @@ func (t *Target) Main(body usm.Block) {
 //If branches to the body Block if the condition is not zero.
 //If the condition is zero, this process follows the chain, treating them as elseif's.
 //The last block is branched to if none of the previous branches were followed.
-func (t *Target) If(condition usm.Bit, body usm.Block, chain usm.ElseIfChain, last usm.Block) {
+func (t *Target) If(condition usm.Bit, body usm.Block, chain []usm.ElseIf, last usm.Block) {
 	panic("not implemented")
 }
 
@@ -338,4 +342,27 @@ func (t *Target) Or(a usm.Bit, b usm.Bit) usm.Bit {
 //Not returns !Bit
 func (t *Target) Not(_ usm.Bit) usm.Bit {
 	panic("not implemented")
+}
+
+//Range creates a loop that runs the iterator from 'from' to 'to'
+//under the relationship constraint with a given step.
+//Relationship -2: <, -1:<=, 0: =, 1: >=, 2: >
+func (t *Target) Range(from usm.Number, relationship int, to usm.Number, step usm.Number,
+	body func(i usm.Number)) {
+	panic("not implemented")
+}
+
+//Errors returns the number of errors on the thread-local error stack.
+func (t *Target) Errors() usm.Number {
+	panic("not implemented")
+}
+
+//Native returns b as a native.
+func (t *Target) Native(b []byte) usm.Native {
+	return b
+}
+
+//Writer returns a writer to the target.
+func (t *Target) Writer() *bytes.Buffer {
+	return &t.Buffer
 }

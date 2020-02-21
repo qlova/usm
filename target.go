@@ -2,6 +2,7 @@
 package usm
 
 import (
+	"bytes"
 	"math/big"
 	"reflect"
 )
@@ -33,6 +34,9 @@ type (
 
 	//Function is a binded label.
 	Function Value
+
+	//Native is a target-native value.
+	Native Value
 )
 
 //Register is a reference to a value.
@@ -47,10 +51,15 @@ type Label int
 //Type is a usm type.
 type Type reflect.Type
 
-//ElseIfChain is an ElseIfChain chain.
-type ElseIfChain struct {
+//ElseIf is an ElseIf structure.
+type ElseIf struct {
 	Bit
 	Block
+}
+
+//Arg returns the register that the i'th function argument is in.
+func Arg(i uint) Register {
+	return Register(-int(i) - 1)
 }
 
 //Target is a usm target.
@@ -72,7 +81,7 @@ type Target interface {
 	//If branches to the body Block if the condition is not zero.
 	//If the condition is zero, this process follows the chain, treating them as elseif's.
 	//The last block is branched to if none of the previous branches were followed.
-	If(condition Bit, body Block, chain ElseIfChain, last Block)
+	If(condition Bit, body Block, chain []ElseIf, last Block)
 
 	//Loop loops the body while an optional condition is true.
 	//If condition is nil, then the loop is infinite.
@@ -80,6 +89,12 @@ type Target interface {
 
 	//Each loops over an array, placing the index into 'i' and the value into 'v'.
 	Each(array Array, body func(i Number, v Value))
+
+	//Range creates a loop that runs the iterator from 'from' to 'to'
+	//under the relationship constraint with a given step.
+	//Relationship -2: <, -1:<=, 0: =, 1: >=, 2: >
+	Range(from Number, relationship int, to Number, step Number,
+		body func(i Number))
 
 	//Break breaks the inenr-most loop.
 	Break()
@@ -140,6 +155,9 @@ type Target interface {
 
 	//Catch removes and returns the latest error on the thread-local error stack.
 	Catch() Value
+
+	//Errors returns the number of errors on the thread-local error stack.
+	Errors() Number
 
 	//Call calls the provided label, passing the provided argument values and returns the result.
 	//If the label is 0, then the first argument is treated as a label bind and subsequent arguments are passed.
@@ -244,4 +262,10 @@ type Target interface {
 
 	//Not returns !Bit
 	Not(Bit) Bit
+
+	//Native creates a native-target value from the specified target-dependant bytes.
+	Native([]byte) Native
+
+	//Writer returns the current buffer so that target-dependant bytes can be written.
+	Writer() *bytes.Buffer
 }

@@ -24,6 +24,7 @@ func (t *Target) Run() error {
 
 	var cmd = exec.Command("go", "run", name)
 	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
 	cmd.Stdin = os.Stdin
 
 	return cmd.Run()

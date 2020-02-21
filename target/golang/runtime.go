@@ -14,17 +14,31 @@ type Value struct {
 	int64
 }
 
+func (v Value) Bytes() []byte {
+	var slice []byte
+	var header = (*reflect.SliceHeader)(unsafe.Pointer(&slice))
+	header.Data = uintptr(v.Pointer)
+	header.Len = int(v.int64)
+	header.Cap = int(v.int64)
+	return slice
+}
+
 type Runtime struct {
 	Errors []Value
 }
 
+func (r *Runtime) Stdin(s Value) Value {
+	n, err := os.Stdin.Read(s.Bytes())
+	if err != nil {
+		r.Errors = append(r.Errors, r.String(err.Error()))
+	}
+	return Value{
+		int64: int64(n),
+	}
+}
+
 func (r *Runtime) Stdout(s Value) Value {
-	var slice []byte
-	var header = (*reflect.SliceHeader)(unsafe.Pointer(&slice))
-	header.Data = uintptr(s.Pointer)
-	header.Len = int(s.int64)
-	header.Cap = int(s.int64)
-	n, err := os.Stdout.Write(slice)
+	n, err := os.Stdout.Write(s.Bytes())
 	if err != nil {
 		r.Errors = append(r.Errors, r.String(err.Error()))
 	}
